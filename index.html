@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UBIKA - Prototipo Visual</title>
+    <!-- Estilos del mapa gratuito de OpenStreetMap -->
+    <link rel="stylesheet" href="https://unpkg.com" />
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f0f2f5; text-align: center; }
+        .contenedor { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { color: #1a1a2e; margin-bottom: 5px; }
+        .btn { background: #3182ce; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 16px; margin: 10px 0; width: 100%; cursor: pointer; }
+        #mapa { height: 300px; width: 100%; border-radius: 8px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+        <h1>📍 UBIKA</h1>
+        <p>Prototipo visual del Cliente (Vista Móvil por QR)</p>
+        
+        <!-- Botones de muestra sin funciones complejas -->
+        <button class="btn">📱 Solicitar Asesor de Celulares</button>
+        <button class="btn" style="background:#38a169;">💻 Solicitar Asesor de Cómputo</button>
+
+        <!-- Aquí se dibujará el mapa visual gratuito -->
+        <div id="mapa"></div>
+    </div>
+
+    <!-- Script para cargar el mapa básico de OpenStreetMap y Leaflet -->
+    <script src="https://unpkg.com"></script>
+    <script>
+        // Centra el mapa en una coordenada inicial de prueba
+        var mapa = L.map('mapa').setView([4.6097, -74.0817], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; Colaboradores de OpenStreetMap'
+        }).addTo(mapa);
+
+        // Coloca un pin de prueba donde estaría un asesor en el almacén
+        L.marker([4.6097, -74.0817]).addTo(mapa)
+            .bindPopup('<b>Asesor Disponible</b><br>Sección de Celulares e IA.').openPopup();
+    </script>
+</body>
+</html>
