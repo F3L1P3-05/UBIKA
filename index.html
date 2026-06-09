@@ -3,170 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UBIKA - Prototipo Interactivo Fijo</title>
-    
-    <!-- Librería de Mapas Gratuitos OpenStreetMap -->
-    <link rel="stylesheet" href="https://unpkg.com" />
-    
+    <title>UBIKA - Sistema Inteligente</title>
     <style>
-        body { font-family: sans-serif; margin: 0; background-color: #f4f6f9; color: #333; text-align: center; }
-        header { background-color: #1a1a2e; color: white; padding: 15px; font-size: 22px; font-weight: bold; }
-        
-        /* Botones de navegación principal */
-        .barra-navegacion { display: flex; justify-content: center; background: #e2e8f0; padding: 10px; }
-        .tab-link { background: #cbd5e0; border: none; padding: 12px 20px; font-size: 15px; cursor: pointer; border-radius: 5px; font-weight: bold; margin: 0 5px; }
-        .tab-link.activa { background-color: #3182ce; color: white; }
-        
-        .seccion-web { display: none; padding: 20px; max-width: 900px; margin: 0 auto; }
-        .seccion-web.visible { display: block; }
-        
-        .tarjeta-caja { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: left; }
-        .btn-accion { background-color: #3182ce; color: white; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; width: 100%; font-weight: bold; margin: 5px 0; }
-        
-        #mapa-abierto { height: 350px; width: 100%; border-radius: 8px; border: 2px solid #cbd5e0; margin-top: 15px; }
-        .alerta-mensaje { background: #fff5f5; border-left: 4px solid #e53e3e; padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .barra-superior{
+        background-color: #1a1a2e;
+            color: white;
+            padding: 10px;
+            text-aling: center;
+        }
+        .contenedor-principal{
+            display: felx;
+            heihgt: clac(100vh-90px);
+        }
+        .panel-controles{
+            width: 300px;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            text aling: left;
+        }
+         #contenedor-mapa { /*se pone # ya que no es una clase si no un identificador*/
+            flex-grow: 1;              /* Le ordena expandirse por toda la derecha */
+            background-color: #e2e8f0; /* Color gris temporal mientras cargamos el mapa real */
+        }
+         .btn-categoria {
+            display: block;            /* Hace que el botón ocupe una línea completa */
+            width: 100%;               /* Se estira a todo el ancho de la caja blanca */
+            margin-bottom: 10px;       /* Separa un botón del otro hacia abajo */
+            background-color: #3182ce; /* Color azul moderno */
+            color: white;              /* Letras blancas */
+            padding: 12px;             /* Espacio interno para que el botón sea grande */
+            border: none;              /* Quitamos el borde gris feo por defecto */
+            border-radius: 6px;        /* Redondeamos las esquinas suavemente */
+            font-size: 15px;           /* Letra legible */
+            cursor: pointer;           /* El cursor se vuelve una manito al pasar encima */
+        }
     </style>
 </head>
+
 <body>
+    <header class="barra-superior">
+        <h1>UBIKA</h1>
+        <h3>asesoria al instante </h3>
+    </header>
+       
+    <div class="contenedor-principal">
 
-    <header>📍 UBIKA - Plataforma Retail Inteligente</header>
-
-    <!-- Pestañas simplificadas -->
-    <div class="barra-navegacion">
-        <button id="btn-tab1" class="tab-link activa" onclick="irAPestana('vista-asesor', 'btn-tab1')">📱 1. App Asesor</button>
-        <button id="btn-tab2" class="tab-link" onclick="irAPestana('vista-cliente', 'btn-tab2')">🛒 2. App Cliente (QR)</button>
-        <button id="btn-tab3" class="tab-link" onclick="irAPestana('vista-jefe', 'btn-tab3')">📊 3. Panel Jefe</button>
-    </div>
-
-    <!-- PANTALLA 1: ASESOR -->
-    <div id="vista-asesor" class="seccion-web visible">
-        <div class="tarjeta-caja" style="max-width: 450px; margin: 0 auto;">
-            <h2>Simulador del Asesor</h2>
-            <p><strong>Nombre:</strong> Carlos Mendoza (Especialista en Celulares)</p>
-            <p><strong>Estado:</strong> <span id="txt-estado" style="color:#38a169; font-weight:bold;">DISPONIBLE</span></p>
-            <hr>
-            <button class="btn-accion" style="background:#e53e3e;" onclick="modificarDisponibilidad(false)">Ocupado / Almorzando</button>
-            <button class="btn-accion" style="background:#38a169;" onclick="modificarDisponibilidad(true)">Disponible para Clientes</button>
-            <p><strong>Moverse por la tienda:</strong></p>
-            <button class="btn-accion" onclick="moverGps(0.001)">🚶‍♂️ Caminar hacia Pasillo Norte</button>
-            <button class="btn-accion" onclick="moverGps(-0.001)">🚶‍♂️ Caminar hacia Pasillo Sur</button>
+        
+    <div class="panel-controles">
+        <h2>Panel de Asistencia</h2>
+        <p>Selecciona la categoría del producto que buscas para ver qué asesores están cerca en el almacén:</p>
+        <button class= "btn-categoria">📱 Celulares </button>
+        <button calss= "btn-categoria">"💻computadores"</button>
+        <button calss= "btn-categoria">"📺 electrodomesticos"</button>
         </div>
-    </div>
 
-    <!-- PANTALLA 2: CLIENTE -->
-    <div id="vista-cliente" class="seccion-web">
-        <div class="tarjeta-caja">
-            <h2>¿Buscas asistencia en tecnología?</h2>
-            <p>Selecciona tu categoría. El mapa de OpenStreetMap te mostrará dónde están los asesores.</p>
-            <button class="btn-accion" onclick="enviarAlertaJefe('Pasillo de Celulares e IA')">📱 Llamar Asesor de Celulares</button>
-            <p id="aviso-cliente" style="color:#2b6cb0; font-weight:bold;"></p>
-            <div id="mapa-abierto"></div>
+        <!-- Caja del Mapa (El espacio reservado para el mapa de Leaflet) -->
+        <div id="contenedor-mapa">
+            <!-- Este div se deja vacío por dentro, ya que JavaScript se encargará de inyectar el mapa aquí más adelante -->
         </div>
+
     </div>
 
-    <!-- PANTALLA 3: JEFE -->
-    <div id="vista-jefe" class="seccion-web">
-        <div class="tarjeta-caja">
-            <h2>Métricas del Administrador</h2>
-            <div style="background:#edf2f7; padding:15px; border-radius:6px; margin: 10px 0;">
-                <strong>Solicitudes de Clientes Recibidas Hoy:</strong> <span id="num-alertas">0</span>
-            </div>
-            <h3>Historial de Alertas de Ayuda</h3>
-            <div id="lista-alertas-jefe">
-                <p style="color:#718096;">Ningún cliente ha solicitado asistencia en los pasillos aún.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts de Control -->
-    <script src="https://unpkg.com"></script>
-    <script>
-        // Datos del simulador en memoria
-        var asesorGps = { nombre: "Carlos Mendoza", lat: 4.6097, lng: -74.0817, disponible: true };
-        var objetoMapa = null;
-        var marcaAsesor = null;
-        var totalAlertas = 0;
-
-        // Función fija para cambiar de pestañas sin errores
-        function irAPestana(idSeccion, idBoton) {
-            // Ocultar todas las secciones
-            document.getElementById('vista-asesor').classList.remove('visible');
-            document.getElementById('vista-cliente').classList.remove('visible');
-            document.getElementById('vista-jefe').classList.remove('visible');
-            
-            // Quitar estado activo a los botones
-            document.getElementById('btn-tab1').classList.remove('activa');
-            document.getElementById('btn-tab2').classList.remove('activa');
-            document.getElementById('btn-tab3').classList.remove('activa');
-            
-            // Mostrar la seleccionada
-            document.getElementById(idSeccion).classList.add('visible');
-            document.getElementById(idBoton).classList.add('activa');
-
-            // Cargar mapa básico si se entra a la pestaña del Cliente
-            if (idSeccion === 'vista-cliente') {
-                setTimeout(function() {
-                    if (objetoMapa === null) {
-                        objetoMapa = L.map('mapa-abierto').setView([4.6097, -74.0817], 15);
-                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            attribution: '&copy; OpenStreetMap'
-                        }).addTo(objetoMapa);
-                    }
-                    dibujarPinesTienda();
-                }, 250);
-            }
-        }
-
-        // Lógica del Asesor
-        function modificarDisponibilidad(valor) {
-            asesorGps.disponible = valor;
-            var t = document.getElementById('txt-estado');
-            if(valor) {
-                t.innerText = "DISPONIBLE";
-                t.style.color = "#38a169";
-            } else {
-                t.innerText = "OCUPADO / AUSENTE";
-                t.style.color = "#e53e3e";
-            }
-        }
-
-        function moverGps(distancia) {
-            asesorGps.lat += distancia;
-            asesorGps.lng += distancia;
-            alert("¡GPS Movido! Nueva ubicación asignada en los pasillos.");
-        }
-
-        // Lógica del Cliente y Mapa
-        function dibujarPinesTienda() {
-            if (!objetoMapa) return;
-            if (marcaAsesor) objetoMapa.removeLayer(marcaAsesor);
-
-            if (asesorGps.disponible) {
-                marcaAsesor = L.marker([asesorGps.lat, asesorGps.lng]).addTo(objetoMapa)
-                    .bindPopup('<b>' + asesorGps.nombre + '</b><br>Asesor de Tecnología.').openPopup();
-                objetoMapa.setView([asesorGps.lat, asesorGps.lng], 15);
-            } else {
-                alert("El asesor está marcado como Ocupado. El mapa se mostrará vacío hasta que cambie su estado.");
-            }
-        }
-
-        function enviarAlertaJefe(zona) {
-            if(!asesorGps.disponible) {
-                document.getElementById('aviso-cliente').innerText = "❌ No hay asesores disponibles en este pasillo.";
-                return;
-            }
-            totalAlertas++;
-            document.getElementById('aviso-cliente').innerText = "✅ Buscando asesor... Solicitud enviada.";
-            document.getElementById('num-alertas').innerText = totalAlertas;
-            
-            var panel = document.getElementById('lista-alertas-jefe');
-            if(totalAlertas === 1) panel.innerHTML = '';
-            
-            var item = document.createElement('div');
-            item.className = 'alerta-mensaje';
-            item.innerHTML = '<strong>🚨 Alerta:</strong> Cliente solicita soporte en la zona: <u>' + zona + '</u>.';
-            panel.insertBefore(item, panel.firstChild);
-        }
-    </script>
 </body>
+
 </html>
+
