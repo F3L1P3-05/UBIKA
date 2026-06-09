@@ -3,185 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UBIKA - Prototipo Interactivo Completo</title>
+    <title>UBIKA - Prototipo Interactivo Fijo</title>
     
-    <!-- Estilos del mapa gratuito de OpenStreetMap -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Librería de Mapas Gratuitos OpenStreetMap -->
+    <link rel="stylesheet" href="https://unpkg.com" />
     
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: #f4f6f9; color: #333; }
-        header { background-color: #1a1a2e; color: white; padding: 15px; text-align: center; font-size: 22px; font-weight: bold; }
+        body { font-family: sans-serif; margin: 0; background-color: #f4f6f9; color: #333; text-align: center; }
+        header { background-color: #1a1a2e; color: white; padding: 15px; font-size: 22px; font-weight: bold; }
         
-        /* Barra de navegación de pestañas en español */
-        .barra-pestanas { display: flex; justify-content: center; background: #e2e8f0; padding: 10px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .boton-pestana { background: none; border: none; padding: 10px 20px; font-size: 15px; cursor: pointer; border-radius: 5px; font-weight: 600; color: #4a5568; margin: 0 5px; transition: 0.3s; }
-        .boton-pestana.activa { background-color: #3182ce; color: white; }
+        /* Botones de navegación principal */
+        .barra-navegacion { display: flex; justify-content: center; background: #e2e8f0; padding: 10px; }
+        .tab-link { background: #cbd5e0; border: none; padding: 12px 20px; font-size: 15px; cursor: pointer; border-radius: 5px; font-weight: bold; margin: 0 5px; }
+        .tab-link.activa { background-color: #3182ce; color: white; }
         
-        .seccion-contenido { display: none; padding: 20px; max-width: 1000px; margin: 0 auto; }
-        .seccion-contenido.activa { display: block; }
+        .seccion-web { display: none; padding: 20px; max-width: 900px; margin: 0 auto; }
+        .seccion-web.visible { display: block; }
         
-        .tarjeta { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: left; }
-        .grid-visual { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .tarjeta-caja { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: left; }
+        .btn-accion { background-color: #3182ce; color: white; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; width: 100%; font-weight: bold; margin: 5px 0; }
         
-        .btn { background-color: #3182ce; color: white; padding: 12px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; width: 100%; font-weight: bold; margin: 5px 0; }
-        .btn-verde { background-color: #38a169; }
-        .btn-rojo { background-color: #e53e3e; }
-        
-        #mapa { height: 400px; width: 100%; border-radius: 8px; border: 2px solid #cbd5e0; margin-top: 10px; }
-        .alerta-item { background: #fff5f5; border-left: 4px solid #e53e3e; padding: 10px; margin: 10px 0; border-radius: 4px; }
+        #mapa-abierto { height: 350px; width: 100%; border-radius: 8px; border: 2px solid #cbd5e0; margin-top: 15px; }
+        .alerta-mensaje { background: #fff5f5; border-left: 4px solid #e53e3e; padding: 10px; margin: 10px 0; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-    <header>📍 UBIKA - Simulador de Plataforma Retail</header>
+    <header>📍 UBIKA - Plataforma Retail Inteligente</header>
 
-    <!-- Navegación para cambiar entre las 3 aplicaciones independientes -->
-    <div class="barra-pestanas">
-        <button class="boton-pestana activa" onclick="cambiarPestana('vista-asesor')">📱 1. App del Asesor</button>
-        <button class="boton-pestana" onclick="cambiarPestana('vista-cliente')">🛒 2. App del Cliente (QR)</button>
-        <button class="boton-pestana" onclick="cambiarPestana('vista-jefe')">📊 3. Panel del Jefe</button>
+    <!-- Pestañas simplificadas -->
+    <div class="barra-navegacion">
+        <button id="btn-tab1" class="tab-link activa" onclick="irAPestana('vista-asesor', 'btn-tab1')">📱 1. App Asesor</button>
+        <button id="btn-tab2" class="tab-link" onclick="irAPestana('vista-cliente', 'btn-tab2')">🛒 2. App Cliente (QR)</button>
+        <button id="btn-tab3" class="tab-link" onclick="irAPestana('vista-jefe', 'btn-tab3')">📊 3. Panel Jefe</button>
     </div>
 
-    <!-- ========================================== -->
-    <!-- SISTEMA 1: APLICACIÓN MÓVIL DEL ASESOR     -->
-    <!-- ========================================== -->
-    <main id="vista-asesor" class="seccion-contenido activa">
-        <div class="tarjeta" style="max-width: 500px; margin: 0 auto;">
-            <h2>Simulador del Teléfono del Asesor</h2>
-            <p>Controla la disponibilidad del asesor tecnológico en los pasillos.</p>
+    <!-- PANTALLA 1: ASESOR -->
+    <div id="vista-asesor" class="seccion-web visible">
+        <div class="tarjeta-caja" style="max-width: 450px; margin: 0 auto;">
+            <h2>Simulador del Asesor</h2>
+            <p><strong>Nombre:</strong> Carlos Mendoza (Especialista en Celulares)</p>
+            <p><strong>Estado:</strong> <span id="txt-estado" style="color:#38a169; font-weight:bold;">DISPONIBLE</span></p>
             <hr>
-            <p><strong>Asesor Seleccionado:</strong> Carlos Mendoza (Experto en Celulares)</p>
-            <p><strong>Estado Actual:</strong> <span id="estado-texto" style="color:#38a169; font-weight:bold;">DISPONIBLE</span></p>
-            
-            <button class="btn btn-rojo" onclick="actualizarEstadoAsesor(false)">Cambiar a Ocupado / Almorzando</button>
-            <button class="btn btn-verde" onclick="actualizarEstadoAsesor(true)">Cambiar a Disponible para Clientes</button>
-            
-            <p style="margin-top: 20px;"><strong>Simular Movimiento de Pasillo (GPS):</strong></p>
-            <button class="btn" onclick="moverAsesor(0.001, 0.001)">🚶‍♂️ Caminar hacia Pasillo de Tecnología Norte</button>
-            <button class="btn" onclick="moverAsesor(-0.001, -0.001)">🚶‍♂️ Caminar hacia Pasillo de Cajas Sur</button>
+            <button class="btn-accion" style="background:#e53e3e;" onclick="modificarDisponibilidad(false)">Ocupado / Almorzando</button>
+            <button class="btn-accion" style="background:#38a169;" onclick="modificarDisponibilidad(true)">Disponible para Clientes</button>
+            <p><strong>Moverse por la tienda:</strong></p>
+            <button class="btn-accion" onclick="moverGps(0.001)">🚶‍♂️ Caminar hacia Pasillo Norte</button>
+            <button class="btn-accion" onclick="moverGps(-0.001)">🚶‍♂️ Caminar hacia Pasillo Sur</button>
         </div>
-    </main>
+    </div>
 
-    <!-- ========================================== -->
-    <!-- SISTEMA 2: APLICACIÓN WEB DEL CLIENTE (QR) -->
-    <!-- ========================================== -->
-    <main id="vista-cliente" class="seccion-contenido">
-        <div class="grid-visual">
-            <div class="tarjeta">
-                <h2>¿Buscas asistencia técnica?</h2>
-                <p>Escaneaste el QR en el pasillo de Retail. Selecciona qué categoría necesitas y observa el mapa interactivo.</p>
-                <button class="btn" onclick="solicitarAyuda('Sección de Teléfonos e IA')">📱 Buscar Asesor de Celulares</button>
-                <button class="btn" style="background:#4a5568;" onclick="solicitarAyuda('Sección de Cómputo y Gaming')">💻 Buscar Asesor de Computadores</button>
-                <p id="notificacion-cliente" style="color:#2b6cb0; font-weight:bold; margin-top:15px;"></p>
-            </div>
-            <div class="tarjeta" style="grid-column: span 2;">
-                <h3>Ubicación de Asesores en Tiempo Real</h3>
-                <div id="mapa"></div>
-            </div>
+    <!-- PANTALLA 2: CLIENTE -->
+    <div id="vista-cliente" class="seccion-web">
+        <div class="tarjeta-caja">
+            <h2>¿Buscas asistencia en tecnología?</h2>
+            <p>Selecciona tu categoría. El mapa de OpenStreetMap te mostrará dónde están los asesores.</p>
+            <button class="btn-accion" onclick="enviarAlertaJefe('Pasillo de Celulares e IA')">📱 Llamar Asesor de Celulares</button>
+            <p id="aviso-cliente" style="color:#2b6cb0; font-weight:bold;"></p>
+            <div id="mapa-abierto"></div>
         </div>
-    </main>
+    </div>
 
-    <!-- ========================================== -->
-    <!-- SISTEMA 3: PANEL DEL JEFE / ALMACÉN        -->
-    <!-- ========================================== -->
-    <main id="vista-jefe" class="seccion-contenido">
-        <div class="grid-visual">
-            <div class="tarjeta">
-                <h2>Métricas del Almacén</h2>
-                <p>Estadísticas clave generadas automáticamente.</p>
-                <div style="background:#edf2f7; padding:15px; border-radius:6px; margin: 10px 0;">
-                    <strong>Asesores Trabajando:</strong> <span id="jefe-total-asesores">1</span>
-                </div>
-                <div style="background:#edf2f7; padding:15px; border-radius:6px; margin: 10px 0;">
-                    <strong>Alertas de Clientes Hoy:</strong> <span id="jefe-alertas-total">0</span>
-                </div>
+    <!-- PANTALLA 3: JEFE -->
+    <div id="vista-jefe" class="seccion-web">
+        <div class="tarjeta-caja">
+            <h2>Métricas del Administrador</h2>
+            <div style="background:#edf2f7; padding:15px; border-radius:6px; margin: 10px 0;">
+                <strong>Solicitudes de Clientes Recibidas Hoy:</strong> <span id="num-alertas">0</span>
             </div>
-            <div class="tarjeta" style="grid-column: span 2;">
-                <h2>Historial de Solicitudes Pendientes</h2>
-                <div id="contenedor-alertas">
-                    <p style="color:#718096;">Ninguna tienda ha solicitado asistencia técnica por el momento.</p>
-                </div>
+            <h3>Historial de Alertas de Ayuda</h3>
+            <div id="lista-alertas-jefe">
+                <p style="color:#718096;">Ningún cliente ha solicitado asistencia en los pasillos aún.</p>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Scripts de control interactivo para simular bases de datos locales -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Scripts de Control -->
+    <script src="https://unpkg.com"></script>
     <script>
-        // Coordenadas iniciales simuladas de la tienda
-        let asesorDatos = { nombre: "Carlos Mendoza", lat: 4.6097, lng: -74.0817, disponible: true };
-        let mapaObjeto = null;
-        let marcadorAsesor = null;
-        let contadorAlertas = 0;
+        // Datos del simulador en memoria
+        var asesorGps = { nombre: "Carlos Mendoza", lat: 4.6097, lng: -74.0817, disponible: true };
+        var objetoMapa = null;
+        var marcaAsesor = null;
+        var totalAlertas = 0;
 
-        // Función para cambiar de pantalla en español
-        function cambiarPestana(idPestana) {
-            document.querySelectorAll('.seccion-contenido').forEach(s => s.classList.remove('active', 'activa'));
-            document.querySelectorAll('.boton-pestana').forEach(b => b.classList.remove('activa'));
+        // Función fija para cambiar de pestañas sin errores
+        function irAPestana(idSeccion, idBoton) {
+            // Ocultar todas las secciones
+            document.getElementById('vista-asesor').classList.remove('visible');
+            document.getElementById('vista-cliente').classList.remove('visible');
+            document.getElementById('vista-jefe').classList.remove('visible');
             
-            document.getElementById(idPestana).classList.add('activa');
-            event.target.classList.add('activa');
+            // Quitar estado activo a los botones
+            document.getElementById('btn-tab1').classList.remove('activa');
+            document.getElementById('btn-tab2').classList.remove('activa');
+            document.getElementById('btn-tab3').classList.remove('activa');
+            
+            // Mostrar la seleccionada
+            document.getElementById(idSeccion).classList.add('visible');
+            document.getElementById(idBoton).classList.add('activa');
 
-            // Cargar mapa dinámico si se abre la sección de Clientes
-            if (idPestana === 'vista-cliente') {
+            // Cargar mapa básico si se entra a la pestaña del Cliente
+            if (idSeccion === 'vista-cliente') {
                 setTimeout(function() {
-                    if (!mapaObjeto) {
-                        mapaObjeto = L.map('mapa').setView([4.6097, -74.0817], 15);
+                    if (objetoMapa === null) {
+                        objetoMapa = L.map('mapa-abierto').setView([4.6097, -74.0817], 15);
                         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                             attribution: '&copy; OpenStreetMap'
-                        }).addTo(mapaObjeto);
+                        }).addTo(objetoMapa);
                     }
-                    actualizarMapaVisual();
-                }, 200);
+                    dibujarPinesTienda();
+                }, 250);
             }
         }
 
-        // Lógica interactiva del Asesor
-        function actualizarEstadoAsesor(estaDisponible) {
-            asesorDatos.disponible = estaDisponible;
-            const texto = document.getElementById('estado-texto');
-            if(estaDisponible) {
-                texto.innerText = "DISPONIBLE";
-                texto.style.color = "#38a169";
+        // Lógica del Asesor
+        function modificarDisponibilidad(valor) {
+            asesorGps.disponible = valor;
+            var t = document.getElementById('txt-estado');
+            if(valor) {
+                t.innerText = "DISPONIBLE";
+                t.style.color = "#38a169";
             } else {
-                texto.innerText = "OCUPADO / AUSENTE";
-                texto.style.color = "#e53e3e";
+                t.innerText = "OCUPADO / AUSENTE";
+                t.style.color = "#e53e3e";
             }
-            if (mapaObjeto) actualizarMapaVisual();
         }
 
-        function moverAsesor(cambioLat, cambioLng) {
-            asesorDatos.lat += cambioLat;
-            asesorDatos.lng += cambioLng;
-            alert("¡GPS simulado! El asesor se movió a las coordenadas: " + asesorDatos.lat.toFixed(4) + ", " + asesorDatos.lng.toFixed(4));
-            if (mapaObjeto) actualizarMapaVisual();
+        function moverGps(distancia) {
+            asesorGps.lat += distancia;
+            asesorGps.lng += distancia;
+            alert("¡GPS Movido! Nueva ubicación asignada en los pasillos.");
         }
 
-        // Lógica interactiva del Mapa del Cliente
-        function actualizarMapaVisual() {
-            if (!mapaObjeto) return;
-            
-            if (marcadorAsesor) {
-                mapaObjeto.removeLayer(marcadorAsesor);
-            }
+        // Lógica del Cliente y Mapa
+        function dibujarPinesTienda() {
+            if (!objetoMapa) return;
+            if (marcaAsesor) objetoMapa.removeLayer(marcaAsesor);
 
-            if (asesorDatos.disponible) {
-                marcadorAsesor = L.marker([asesorDatos.lat, asesorDatos.lng]).addTo(mapaObjeto)
-                    .bindPopup('<b>' + asesorDatos.nombre + '</b><br>Especialista en Celulares e IA.').openPopup();
-                mapaObjeto.setView([asesorDatos.lat, asesorDatos.lng], 15);
+            if (asesorGps.disponible) {
+                marcaAsesor = L.marker([asesorGps.lat, asesorGps.lng]).addTo(objetoMapa)
+                    .bindPopup('<b>' + asesorGps.nombre + '</b><br>Asesor de Tecnología.').openPopup();
+                objetoMapa.setView([asesorGps.lat, asesorGps.lng], 15);
             } else {
-                alert("El asesor está ocupado. El mapa no mostrará su pin hasta que cambie su estado a Disponible.");
+                alert("El asesor está marcado como Ocupado. El mapa se mostrará vacío hasta que cambie su estado.");
             }
         }
 
-        function solicitarAyuda(categoria) {
-            if(!asesorDatos.disponible) {
-                document.getElementById('notificacion-cliente').innerText = "Lo sentimos, no hay asesores disponibles en este pasillo ahora.";
+        function enviarAlertaJefe(zona) {
+            if(!asesorGps.disponible) {
+                document.getElementById('aviso-cliente').innerText = "❌ No hay asesores disponibles en este pasillo.";
                 return;
             }
+            totalAlertas++;
+            document.getElementById('aviso-cliente').innerText = "✅ Buscando asesor... Solicitud enviada.";
+            document.getElementById('num-alertas').innerText = totalAlertas;
             
-            contadorAlertas++;
-            document.getElementById('notificacion-cliente').innerText = "✅ Alerta enviada. El asesor va en camino.";
+            var panel = document.getElementById('lista-alertas-jefe');
+            if(totalAlertas === 1) panel.innerHTML = '';
             
-            // Simular el envío de datos al panel del jefe
-            document.getElementById('jefe-alertas-total').innerText = contadorAlertas;
+            var item = document.createElement('div');
+            item.className = 'alerta-mensaje';
+            item.innerHTML = '<strong>🚨 Alerta:</strong> Cliente solicita soporte en la zona: <u>' + zona + '</u>.';
+            panel.insertBefore(item, panel.firstChild);
+        }
+    </script>
+</body>
+</html>
